@@ -36,7 +36,6 @@ export const handler = async ({ syncId }: SFEvent) => {
     author: string
     title: string
     holdtime: string
-    library: "calgary" | "toronto"
   }[] = []
 
   let isFinishedSync = false

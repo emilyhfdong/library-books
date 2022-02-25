@@ -23,10 +23,10 @@ export const handler = async (_setupCode: any) => {
   await page.waitForTimeout(1000)
 
   const [copyButton] = await page.$x(
-    "//span[contains(., 'Copy From My Other Device')]"
+    "//span[contains(., 'Copy From Another Device')]"
   )
   if (!copyButton) {
-    throw new Error("No 'Copy From My Other Device' button")
+    throw new Error("No 'Copy From Another Device' button")
   }
   await copyButton.click()
   await page.waitForTimeout(1000)
@@ -35,8 +35,11 @@ export const handler = async (_setupCode: any) => {
   await page.keyboard.type(setupCode)
   await page.waitForTimeout(1000)
   console.log("getting local storage")
-  const localStorage = await page.evaluate(() => JSON.stringify(localStorage))
+  const localStorageDara = await page.evaluate(() =>
+    JSON.stringify(localStorage)
+  )
   browser.close()
-  await s3.putObject(config.localStorageJsonKey, JSON.parse(localStorage))
+  console.log("storing local storage in s3")
+  await s3.putObject(config.localStorageJsonKey, JSON.parse(localStorageDara))
   return
 }
